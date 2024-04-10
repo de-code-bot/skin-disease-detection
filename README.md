@@ -30,19 +30,30 @@ This is the backend of the skin disease detection using image processing on goog
 
 #Edits in the code
 
-download the dataset and unzip it
-the upload it in the respective folder on google drive 
-copy the path of respective folder in the respective paths:
+step 1. download the dataset and unzip it
+step 2. Then upload it in the respective folder on google drive 
+step 3. Copy the path of respective folder in the respective paths:
 
-'''
-train = train_datagen.flow_from_directory('path of the train set',
-                                                 target_size = (224, 224),
-                                                 batch_size = 32
-                                          )
+> [!Change 1]
+> train = train_datagen.flow_from_directory('path of the train set',
+>                                                 target_size = (224, 224),
+>                                                 batch_size = 32
+>                                         )
+>
+>val = val_datagen.flow_from_directory('path of the test set',
+>                                                target_size = (224, 224),
+>                                                 batch_size = 16
+>                                      )
 
-val = val_datagen.flow_from_directory('path of the test set',
-                                                 target_size = (224, 224),
-                                                 batch_size = 16
-                                      )
+                                      
+> [!Change 2]
 
-'''
+>from keras.models import load_model
+>model = load_model('Path  of the model stored in drive')
+
+> [!Change 3]
+> img_path= 'Path of the image to detected'
+>prediction(img_path)
+
+
+
