@@ -28,7 +28,7 @@ This is the backend of the skin disease detection using image processing on goog
  digital photos of the affected skin area for input and uses image analysis to
  identify the type of infection. 
 
-#Edits in the code
+# Edits in the code
 
 1. download the dataset and unzip it.
 2. Then upload it in the respective folder on google drive .
