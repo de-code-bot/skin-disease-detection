@@ -35,8 +35,7 @@ step 2. Then upload it in the respective folder on google drive
 step 3. Copy the path of respective folder in the respective paths:
 
 > [!IMPORTANT]
-> Change 1
-
+> ##Change 1
 > train = train_datagen.flow_from_directory('path of the train set',
 >                                                 target_size = (224, 224),
 >                                                 batch_size = 32
