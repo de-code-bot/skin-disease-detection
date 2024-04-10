@@ -34,7 +34,8 @@ step 1. download the dataset and unzip it
 step 2. Then upload it in the respective folder on google drive 
 step 3. Copy the path of respective folder in the respective paths:
 
-> [!Change 1]
+> [!IMPORTANT]
+> Change 1
 > train = train_datagen.flow_from_directory('path of the train set',
 >                                                 target_size = (224, 224),
 >                                                 batch_size = 32
@@ -46,12 +47,13 @@ step 3. Copy the path of respective folder in the respective paths:
 >                                      )
 
                                       
-> [!Change 2]
-
+> [!IMPORTANT]
+> Change 2
 >from keras.models import load_model
 >model = load_model('Path  of the model stored in drive')
 
-> [!Change 3]
+> [!IMPORTANT]
+> Change 3
 > img_path= 'Path of the image to detected'
 >prediction(img_path)
 
