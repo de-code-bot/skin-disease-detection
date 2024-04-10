@@ -30,9 +30,9 @@ This is the backend of the skin disease detection using image processing on goog
 
 #Edits in the code
 
-step 1. download the dataset and unzip it
-step 2. Then upload it in the respective folder on google drive 
-step 3. Copy the path of respective folder in the respective paths:
+1. download the dataset and unzip it.
+2. Then upload it in the respective folder on google drive .
+3. Copy the path of respective folder in the respective paths:
 
 > [!IMPORTANT]
 > train = train_datagen.flow_from_directory('path of the train set',
