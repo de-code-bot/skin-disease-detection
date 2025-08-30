@@ -28,4 +28,16 @@ def make_config(config_path: Optional[Path] = None) -> QuartConfig:
         config_path = Path(__file__).parent / 'app_config.toml'
     
     with open(config_path, mode='rb') as config_file:
-        return QuartConfig.model_validate(tomllib.load(config_file), strict=True)
+        # Config dict will need to be flattened first before being parsed by pydantic
+        flattened_config_dict: dict[str, str|int] = {}
+        remaining_maps: list[dict[str, Any]] = [tomllib.load(config_file)]
+        
+        while remaining_maps:
+            map: dict[str, Any] = remaining_maps.pop()
+            for k, v in map:
+                if isinstance(v, dict):
+                    remaining_maps.append(v)
+                    continue
+                flattened_config_dict[k] = v
+
+        return QuartConfig.model_validate(flattened_config_dict, strict=True)
