@@ -1,0 +1,11 @@
+# Key names need to be in uppercase to be recognised by Quart as valid config entries
+
+[network]
+PORT=5000
+HOST='127.0.0.1'
+
+[application]
+APPLICATION_ROOT='/api/v1'
+
+[business]
+ACCEPTED_IMAGE_MIMETYPE='image/*'
