@@ -34,7 +34,7 @@ def make_config(config_path: Optional[Path] = None) -> QuartConfig:
         
         while remaining_maps:
             map: dict[str, Any] = remaining_maps.pop()
-            for k, v in map:
+            for k, v in map.items():
                 if isinstance(v, dict):
                     remaining_maps.append(v)
                     continue
