@@ -14,7 +14,6 @@ __all__ = ('MODEL_BLUEPRINT',
 MODEL_BLUEPRINT: Final[Blueprint] = Blueprint("models_blueprint", "models_blueprint")
 
 MODEL_BLUEPRINT.route('/', methods=['POST'])
-@enforce_mimetype(current_app.config['ACCEPTED_IMAGE_MIMETYPE'])
 async def submit_prediction() -> tuple[Response, int]:
     files: MultiDict[str, FileStorage] = await request.files
     additional_kwargs: dict[str, str] = {}

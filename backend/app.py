@@ -10,7 +10,7 @@ def create_app() -> Quart:
     app: Final[Quart] = Quart(__name__)
     app.config.from_object(make_config())
 
-    from backend.model_blueprint import MODEL_BLUEPRINT
+    from backend.blueprints.model_blueprint import MODEL_BLUEPRINT
     app.register_blueprint(MODEL_BLUEPRINT, url_prefix='/'.join([app.config['APPLICATION_ROOT'], 'predictions']))
 
     app.register_error_handler(Exception, generic_error_handler)
