@@ -15,8 +15,6 @@ class QuartConfig(pydantic.BaseModel):
     HOST: Annotated[pydantic.IPvAnyAddress, pydantic.Field(frozen=True)]
     PORT: Annotated[int, pydantic.Field(frozen=True, ge=0, le=64738)]
 
-    ACCEPTED_IMAGE_MIMETYPE: Annotated[str, pydantic.BeforeValidator(process_image_mimetypes)]
-
     @pydantic.model_validator(mode='after')
     def validate_port(self) -> Self:
         if not check_port_availability(self.PORT):

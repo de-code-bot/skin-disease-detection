@@ -2,6 +2,8 @@
 
 from typing import Any, Final
 
+from backend.auxilary.decorators import enforce_mimetype
+
 from quart import Blueprint, Response, request, jsonify
 
 from werkzeug.datastructures import FileStorage
@@ -13,6 +15,7 @@ __all__ = ('MODEL_BLUEPRINT',
 MODEL_BLUEPRINT: Final[Blueprint] = Blueprint("models_blueprint", "models_blueprint")
 
 @MODEL_BLUEPRINT.route('/', methods=['POST'])
+@enforce_mimetype('multipart', 'form-data')
 async def submit_prediction() -> tuple[Response, int]:
     files: dict[str, FileStorage] = dict(await request.files)
     if not files:
