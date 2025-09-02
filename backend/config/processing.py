@@ -4,7 +4,7 @@ import re
 import socket
 import tomllib
 from pathlib import Path
-from typing import Any, Optional, Final
+from typing import Any, Final
 
 import pydantic
 
@@ -39,10 +39,7 @@ def check_port_availability(port: int, protocol: socket.SocketKind = socket.SOCK
         return True
 
 
-def make_config(model: type[pydantic.BaseModel], config_path: Optional[Path] = None) -> pydantic.BaseModel:
-    if not config_path:
-        config_path = Path(__file__).parent / 'app_config.toml'
-    
+def make_config(model: type[pydantic.BaseModel], config_path: Path) -> Any:
     with open(config_path, mode='rb') as config_file:
         # Config dict will need to be flattened first before being parsed by pydantic
         flattened_config_dict: dict[str, str|int] = {}
