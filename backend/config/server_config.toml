@@ -1,0 +1,9 @@
+[mimetypes]
+form_type='multipart'
+form_subtype='form-data'
+
+[file]
+max_image_size=33_554_432   # 32 MB
+
+[automations]
+new_data_lookback_threshold=7   # 1 week
