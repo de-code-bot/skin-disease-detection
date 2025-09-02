@@ -4,6 +4,11 @@ form_subtype='form-data'
 
 [file]
 max_image_size=33_554_432   # 32 MB
+image_download_buffer_size=65_536
+image_bucket_name='image_bucket'
 
 [automations]
 new_data_lookback_threshold=7   # 1 week
+
+[models]
+classifier_h5_filename='classifier.h5'
