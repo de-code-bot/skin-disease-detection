@@ -30,17 +30,15 @@ class ServerConfig(pydantic.BaseModel):
 
     max_image_size: Annotated[int, pydantic.Field(ge=1)]
     image_download_buffer_size: Annotated[int, pydantic.Field(ge=1)]
-    image_bucket: Path
+    image_bucket: Annotated[Path, pydantic.BeforeValidator(lambda i : Path(i))]
 
     new_data_lookback_threshold: Annotated[int, pydantic.Field(ge=1)]
     classifier_h5_filename: Annotated[str, pydantic.Field(frozen=True)]
 
-    @pydantic.field_validator('image_bucket', mode='after')
-    @classmethod
-    def cast_bucket_path(cls, path: str) -> Path:
-        bucket_path: Final[Path] = Path(path)
-        if not (bucket_path.is_dir()):
-            raise ValueError(f'Path to image bucket ({str(bucket_path)}) is not a directory')
-        if not (bucket_path.is_absolute()):
+    def prepend_bucket_path(self, parent_dir: Path) -> Path:
+        self.image_bucket = parent_dir / self.image_bucket
+        if not (self.image_bucket.is_dir()):
+            raise ValueError(f'Path to image bucket ({str(self.image_bucket)}) is not a directory')
+        if not (self.image_bucket.is_absolute()):
             raise ValueError(f'Directory path to image bucket must be absolute')
-        return bucket_path
+        return self.image_bucket
