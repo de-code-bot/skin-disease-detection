@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skin Disease Detection</title>
+  <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="index.css") }}>
+</head>
+<body>
+  <div class="container">
+    <h1>Skin Disease Detection</h1>
+
+    <label for="imageUpload" class="upload-box">
+      <p>Click or drag an image to upload</p>
+      <input type="file" id="imageUpload" accept="image/*">
+    </label>
+
+    <button class="btn" id="analyzeBtn">Analyze Image</button>
+
+    <div class="preview" id="preview"></div>
+
+    <div class="results" id="results" style="display:none;">
+      <h2>Results</h2>
+      <p id="resultText">Waiting for API response...</p>
+    </div>
+  </div>
+
+  <script type="text/javascript" src={{url_for('static', filename='index.js')}}></script>
+</body>
+</html>
