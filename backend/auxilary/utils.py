@@ -24,5 +24,6 @@ def generic_error_handler(e : Exception):
 
     return response, getattr(e, "code", 500)
 
-async def async_save_image(file_object: FileStorage, destination: Path, buffer_size: int) -> None:
+async def async_save_image(file_object: FileStorage, destination: Path, buffer_size: int) -> Path:
     await asyncio.to_thread(file_object.save, destination, buffer_size)
+    return destination
