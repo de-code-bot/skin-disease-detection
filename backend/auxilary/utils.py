@@ -1,5 +1,10 @@
-from quart import jsonify
+import asyncio
 import traceback
+from pathlib import Path
+
+from quart import jsonify
+
+from werkzeug.datastructures import FileStorage
 
 def generic_error_handler(e : Exception):
     '''Return a JSON formatted error message to the client
@@ -18,3 +23,6 @@ def generic_error_handler(e : Exception):
         response.headers.update(header_kwargs)
 
     return response, getattr(e, "code", 500)
+
+async def async_save_image(file_object: FileStorage, destination: Path, buffer_size: int) -> None:
+    await asyncio.to_thread(file_object.save, destination, buffer_size)
