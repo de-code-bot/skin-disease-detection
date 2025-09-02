@@ -1,12 +1,13 @@
-import tomllib
-from typing import Annotated, Any, Final, Optional, Self
-from pathlib import Path
+'''Configuration objects used by the Quart backend'''
 
-from backend.config.processing import check_port_availability, process_app_root, process_image_mimetypes
+from typing import Annotated, Self
+
+from backend.config.processing import check_port_availability, process_app_root, process_http_claim
 
 import pydantic
 
-__all__ = ('QuartConfig', 'make_config')
+__all__ = ('QuartConfig',
+           'ServerConfig')
 
 class QuartConfig(pydantic.BaseModel):
     '''Configuration Object for Quart application'''
@@ -21,21 +22,10 @@ class QuartConfig(pydantic.BaseModel):
             raise ValueError(f'Port {self.PORT} is currently running a TCP process, and cannot be used by server as listening port')
         return self
     
-def make_config(config_path: Optional[Path] = None) -> QuartConfig:
-    if not config_path:
-        config_path = Path(__file__).parent / 'app_config.toml'
-    
-    with open(config_path, mode='rb') as config_file:
-        # Config dict will need to be flattened first before being parsed by pydantic
-        flattened_config_dict: dict[str, str|int] = {}
-        remaining_maps: list[dict[str, Any]] = [tomllib.load(config_file)]
-        
-        while remaining_maps:
-            map: dict[str, Any] = remaining_maps.pop()
-            for k, v in map.items():
-                if isinstance(v, dict):
-                    remaining_maps.append(v)
-                    continue
-                flattened_config_dict[k] = v
+class ServerConfig(pydantic.BaseModel):
+    '''Configuration object for constants'''
+    form_mimetype: Annotated[str, pydantic.Field(frozen=True, default='multipart'), pydantic.BeforeValidator(process_http_claim)]
+    form_subtype: Annotated[str, pydantic.Field(frozen=True, default='form-data'), pydantic.BeforeValidator(process_http_claim)]
 
-        return QuartConfig.model_validate(flattened_config_dict, strict=True)
+    max_image_size: Annotated[int, pydantic.Field(ge=1)]
+    new_data_lookback_threshold: Annotated[int, pydantic.Field(ge=1)]
