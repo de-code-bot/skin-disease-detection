@@ -2,28 +2,26 @@
 
 import re
 import socket
-from typing import Final
+import tomllib
+from pathlib import Path
+from typing import Any, Optional, Final
+
+import pydantic
 
 __all__ = ('PATH_REGEX',
-           'IMAGE_MIMETYPE_REGEX',
            'process_app_root',
-           'process_image_mimetypes',
            'check_port_availability',)
 
 PATH_REGEX: Final[re.Pattern] = re.compile(r"^/([\w\-/]*)/?$")
-IMAGE_MIMETYPE_REGEX: Final[re.Pattern] = re.compile(r"^image/.*$")
+
+def process_http_claim(claim: str) -> str:
+    return claim.lower().strip()
 
 def process_app_root(root: str) -> str:
     root = root.strip().lower()
     if not PATH_REGEX.match(root):
         raise ValueError(f'Application root {root} invalid')
     return root
-
-def process_image_mimetypes(mimetype: str) -> str:
-    mimetype = mimetype.strip()
-    if not IMAGE_MIMETYPE_REGEX.match(mimetype):
-        raise ValueError(f'Invalid mimetype for images {mimetype}')
-    return mimetype
 
 def check_port_availability(port: int, protocol: socket.SocketKind = socket.SOCK_STREAM) -> bool:
     '''Check whether a port is available for running a protocol.
@@ -39,3 +37,23 @@ def check_port_availability(port: int, protocol: socket.SocketKind = socket.SOCK
             return False
     except (socket.timeout, ConnectionRefusedError, OSError):
         return True
+
+
+def make_config(model: type[pydantic.BaseModel], config_path: Optional[Path] = None) -> pydantic.BaseModel:
+    if not config_path:
+        config_path = Path(__file__).parent / 'app_config.toml'
+    
+    with open(config_path, mode='rb') as config_file:
+        # Config dict will need to be flattened first before being parsed by pydantic
+        flattened_config_dict: dict[str, str|int] = {}
+        remaining_maps: list[dict[str, Any]] = [tomllib.load(config_file)]
+        
+        while remaining_maps:
+            map: dict[str, Any] = remaining_maps.pop()
+            for k, v in map.items():
+                if isinstance(v, dict):
+                    remaining_maps.append(v)
+                    continue
+                flattened_config_dict[k] = v
+
+        return model.model_validate(flattened_config_dict, strict=True)
