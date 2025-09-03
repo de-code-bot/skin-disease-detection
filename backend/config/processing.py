@@ -39,7 +39,7 @@ def check_port_availability(port: int, protocol: socket.SocketKind = socket.SOCK
         return True
 
 
-def make_config(model: type[pydantic.BaseModel], config_path: Path) -> Any:
+def make_config(model: type[pydantic.BaseModel], config_path: Path) -> dict[str, Any]:
     with open(config_path, mode='rb') as config_file:
         # Config dict will need to be flattened first before being parsed by pydantic
         flattened_config_dict: dict[str, str|int] = {}
@@ -53,4 +53,4 @@ def make_config(model: type[pydantic.BaseModel], config_path: Path) -> Any:
                     continue
                 flattened_config_dict[k] = v
 
-        return model.model_validate(flattened_config_dict, strict=True)
+    return flattened_config_dict
