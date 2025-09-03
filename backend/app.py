@@ -19,6 +19,7 @@ def create_app() -> Quart:
     # Initialize global singletons
     server_config: Final[ServerConfig] = singletons.init_server_config(SERVER_ROOT_DIRECTORY / 'config' / 'server_config.toml')
     server_config.prepend_bucket_path(Path(app.instance_path))
+    server_config.populate_classifier_types(SERVER_ROOT_DIRECTORY / 'classification' / 'categories.json')
     
     singletons.init_image_classifier(Path(app.instance_path) / Path(server_config.classifier_h5_filename))
     
