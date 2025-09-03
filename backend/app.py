@@ -5,7 +5,7 @@ from typing import Final
 from backend.auxilary.utils import generic_error_handler
 from backend.config.app_config import ServerConfig
 
-from backend import bootup
+from backend import singletons
 
 def create_app() -> Quart:
     '''Create an instance of the Quart app'''
@@ -14,13 +14,13 @@ def create_app() -> Quart:
     app: Final[Quart] = Quart(__name__,
                               root_path=str(SERVER_ROOT_DIRECTORY),
                               instance_path=str(SERVER_ROOT_DIRECTORY / 'instance'))
-    app.config.from_object(bootup.init_app_config(SERVER_ROOT_DIRECTORY / 'config' / 'app_config.toml'))
+    app.config.from_object(singletons.init_app_config(SERVER_ROOT_DIRECTORY / 'config' / 'app_config.toml'))
 
     # Initialize global singletons
-    server_config: Final[ServerConfig] = bootup.init_server_config(SERVER_ROOT_DIRECTORY / 'config' / 'server_config.toml')
+    server_config: Final[ServerConfig] = singletons.init_server_config(SERVER_ROOT_DIRECTORY / 'config' / 'server_config.toml')
     server_config.prepend_bucket_path(Path(app.instance_path))
     
-    bootup.init_image_classifier(Path(app.instance_path) / Path(server_config.classifier_h5_filename))
+    singletons.init_image_classifier(Path(app.instance_path) / Path(server_config.classifier_h5_filename))
     
     from backend.blueprints.model_blueprint import MODEL_BLUEPRINT
     from backend.blueprints.template_blueprint import TEMPLATES_BLUEPRINT
