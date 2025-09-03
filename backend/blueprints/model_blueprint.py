@@ -1,12 +1,13 @@
 '''Routes to expose the classification model'''
 
+import time
 from pathlib import Path
 from typing import Any, Final
 from uuid import uuid4
 
 from backend.singletons import server_config, image_classifier
 from backend.auxilary.decorators import enforce_mimetype
-from backend.auxilary.utils import async_save_image
+from backend.classification.predictions import make_prediction
 
 from quart import Blueprint, Response, request, jsonify
 
@@ -39,14 +40,14 @@ async def submit_prediction() -> tuple[Response, int]:
         additional_kwargs['file_quantity'] = f"Only a single image accepted, remaining {len(files)} ignored"
         del files
     
-    await async_save_image(file_object=input_image,
-                           destination=server_config.image_bucket / Path(input_image.filename or f'unnamed.{uuid4().hex}'),
+    destination_path: Final[Path] = server_config.image_bucket / '_'.join([str(time.time()), input_image.filename or uuid4().hex])
+    await input_image.save(dst=destination_path,
                            buffer_size=server_config.image_download_buffer_size)
 
-    # image_classifier.predict(...)
+    classification: str = make_prediction(destination_path, image_classifier, server_config.classifier_types) or 'N/A'
 
-    response_data: dict[str, Any] = {'result' : '...', 'file' : input_image.filename}
+    response_data: dict[str, Any] = {'result' : classification, 'file' : input_image.filename}
     if additional_kwargs:
         response_data['additional'] = additional_kwargs
 
-    return (jsonify(response_data), 200)
+    return jsonify(response_data), 200
