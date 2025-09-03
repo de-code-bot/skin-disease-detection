@@ -1,10 +1,13 @@
 from functools import wraps
-from quart import request, g
-from werkzeug.exceptions import BadRequest
-from typing import Callable
+from typing import Any, Callable, Coroutine
 
-def enforce_mimetype(type_: str, subtype: str):
-    def outer_decorator(endpoint: Callable):
+from werkzeug.exceptions import BadRequest
+from quart import request, Response
+
+from backend.models.requests import RequestMimes
+
+def enforce_mimetype(type_: RequestMimes, subtype: RequestMimes):
+    def outer_decorator(endpoint: Callable[..., Coroutine[Any, Any, tuple[Response, int]]]):
         @wraps(endpoint)
         async def inner_decorator(*args, **kwargs):
             request_type, request_subtype = request.mimetype.split('/')

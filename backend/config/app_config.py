@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Annotated, Self
 
-from backend.config.processing import check_port_availability, process_app_root, process_http_claim
+from backend.config.processing import check_port_availability, process_app_root
 
 import pydantic
 
@@ -26,9 +26,6 @@ class QuartConfig(pydantic.BaseModel):
     
 class ServerConfig(pydantic.BaseModel):
     '''Configuration object for constants'''
-    form_mimetype: Annotated[str, pydantic.Field(frozen=True, default='multipart'), pydantic.BeforeValidator(process_http_claim)]
-    form_subtype: Annotated[str, pydantic.Field(frozen=True, default='form-data'), pydantic.BeforeValidator(process_http_claim)]
-
     max_image_size: Annotated[int, pydantic.Field(ge=1)]
     image_download_buffer_size: Annotated[int, pydantic.Field(ge=1)]
     image_bucket: Annotated[Path, pydantic.BeforeValidator(lambda i : Path(i))]

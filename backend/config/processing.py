@@ -14,9 +14,6 @@ __all__ = ('PATH_REGEX',
 
 PATH_REGEX: Final[re.Pattern] = re.compile(r"^/([\w\-/]*)/?$")
 
-def process_http_claim(claim: str) -> str:
-    return claim.lower().strip()
-
 def process_app_root(root: str) -> str:
     root = root.strip().lower()
     if not PATH_REGEX.match(root):
