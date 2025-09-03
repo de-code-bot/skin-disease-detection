@@ -5,18 +5,16 @@ from pathlib import Path
 from typing import Any, Final
 from uuid import uuid4
 
-from backend.singletons import server_config, image_classifier
 from backend.auxilary.decorators import enforce_mimetype
 from backend.classification.predictions import make_prediction
+from backend.dependencies.singleton_types import ServerConfigurationType, AppImageClassifierType
+
+from backend.models.requests import RequestMimes
 
 from quart import Blueprint, Response, request, jsonify
 
 from quart.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
-
-# Runtime import checks (this is so scuffed, I deserve to be put down)
-assert server_config is not None
-assert image_classifier is not None
 
 __all__ = ('MODEL_BLUEPRINT',
            'submit_prediction')
@@ -24,8 +22,8 @@ __all__ = ('MODEL_BLUEPRINT',
 MODEL_BLUEPRINT: Final[Blueprint] = Blueprint("models_blueprint", "models_blueprint")
 
 @MODEL_BLUEPRINT.route('/', methods=['POST'])
-@enforce_mimetype(type_=server_config.form_mimetype, subtype=server_config.form_subtype)
-async def submit_prediction() -> tuple[Response, int]:
+@enforce_mimetype(type_=RequestMimes.FORM_TYPE, subtype=RequestMimes.FORM_SUBTYPE)
+async def submit_prediction(server_config: ServerConfigurationType, image_classifier: AppImageClassifierType) -> tuple[Response, int]:
     files: dict[str, FileStorage] = dict(await request.files)
     if not files:
         raise BadRequest("Missing image for analysis")
