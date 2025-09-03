@@ -1,7 +1,8 @@
 '''Configuration objects used by the Quart backend'''
 
+import json
 from pathlib import Path
-from typing import Annotated, Final, Self
+from typing import Annotated, Self
 
 from backend.config.processing import check_port_availability, process_app_root, process_http_claim
 
@@ -34,6 +35,7 @@ class ServerConfig(pydantic.BaseModel):
 
     new_data_lookback_threshold: Annotated[int, pydantic.Field(ge=1)]
     classifier_h5_filename: Annotated[str, pydantic.Field(frozen=True)]
+    classifier_types: dict[int, str] = {}
 
     def prepend_bucket_path(self, parent_dir: Path) -> Path:
         self.image_bucket = parent_dir / self.image_bucket
@@ -42,3 +44,13 @@ class ServerConfig(pydantic.BaseModel):
         if not (self.image_bucket.is_absolute()):
             raise ValueError(f'Directory path to image bucket must be absolute')
         return self.image_bucket
+    
+    def populate_classifier_types(self, mapping_filepath: Path) -> dict[int, str]:
+        if self.classifier_types:
+            raise ValueError(f'Classifier types already populated: {self.classifier_types}')
+        
+        if not (mapping_filepath.is_absolute() and mapping_filepath.is_file()):
+            raise ValueError(f'Path to disease categories must be an absolute filepath, got: {mapping_filepath}')
+        
+        self.classifier_types = {int(k) : v for k,v in json.loads(mapping_filepath.read_text(encoding='utf-8')).items()}
+        return self.classifier_types
