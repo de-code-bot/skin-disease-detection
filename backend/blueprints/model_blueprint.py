@@ -11,7 +11,7 @@ from backend.classification.predictions import make_prediction
 
 from quart import Blueprint, Response, request, jsonify
 
-from werkzeug.datastructures import FileStorage
+from quart.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
 
 # Runtime import checks (this is so scuffed, I deserve to be put down)
@@ -41,7 +41,7 @@ async def submit_prediction() -> tuple[Response, int]:
         del files
     
     destination_path: Final[Path] = server_config.image_bucket / '_'.join([str(time.time()), input_image.filename or uuid4().hex])
-    await input_image.save(dst=destination_path,
+    await input_image.save(destination=destination_path,
                            buffer_size=server_config.image_download_buffer_size)
 
     classification: str = make_prediction(destination_path, image_classifier, server_config.classifier_types) or 'N/A'
