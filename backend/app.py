@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Final
 
 from backend.auxilary.utils import generic_error_handler
-from backend.background.runtime import model_swapper
+from backend.background.runtime import model_swapper, database_batch_writer
 from backend.config.app_config import ServerConfig
 from backend.dependencies import initializers
 from backend.dependencies.singleton_registry import SingletonRegistry
@@ -25,6 +25,8 @@ def create_app() -> Quart:
     # Initialize global singletons
     server_config: Final[ServerConfig] = initializers.init_server_config(SERVER_ROOT_DIRECTORY / 'config' / 'server_config.toml')
     server_config.prepend_bucket_path(Path(app.instance_path))
+    server_config.prepend_database_path(Path(app.instance_path))
+
     server_config.populate_classifier_types(SERVER_ROOT_DIRECTORY / 'classification' / 'categories.json')
     
     model_filepath: Final[Path] = Path(app.instance_path) / Path(server_config.classifier_h5_filename)
@@ -49,6 +51,13 @@ def create_app() -> Quart:
     @app.before_serving
     async def startup() -> None:
         app.add_background_task(model_swapper, model_filepath, image_classifier, server_config.model_swap_poll_interval)
+        app.add_background_task(database_batch_writer,
+                                server_config.database_filepath,
+                                singleton_registry._db_entry_queue,
+                                singleton_registry._db_entry_write_lock,
+                                server_config.database_write_interval,
+                                server_config.database_write_batch_size,
+                                server_config.lock_contention_timeout)
     
     @app.after_serving
     async def shutdown() -> None:
