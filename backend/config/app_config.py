@@ -52,12 +52,16 @@ class ServerConfig(pydantic.BaseModel):
             raise ValueError(f'Directory path to image bucket must be absolute')
         return self.database_filepath
 
-    def prepend_bucket_path(self, parent_dir: Path) -> Path:
+    def prepend_bucket_path(self, parent_dir: Path, make_dir: bool = True) -> Path:
         self.image_bucket = parent_dir / self.image_bucket
-        if not (self.image_bucket.is_dir()):
+        if make_dir:
+            self.image_bucket.mkdir(exist_ok=True)
+        elif not (self.image_bucket.is_dir()):
             raise ValueError(f'Path to image bucket ({str(self.image_bucket)}) is not a directory')
+        
         if not (self.image_bucket.is_absolute()):
             raise ValueError(f'Directory path to image bucket must be absolute')
+        
         return self.image_bucket
     
     def populate_classifier_types(self, mapping_filepath: Path) -> dict[int, str]:
