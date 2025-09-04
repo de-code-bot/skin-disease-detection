@@ -26,15 +26,31 @@ class QuartConfig(pydantic.BaseModel):
     
 class ServerConfig(pydantic.BaseModel):
     '''Configuration object for constants'''
+    # Image
     max_image_size: Annotated[int, pydantic.Field(ge=1)]
     image_download_buffer_size: Annotated[int, pydantic.Field(ge=1)]
     image_bucket: Annotated[Path, pydantic.BeforeValidator(lambda i : Path(i))]
 
+    # Model
+    classifier_h5_filename: Annotated[str, pydantic.Field(frozen=True)]
+    classifier_types: dict[int, str] = {}
     new_data_lookback_threshold: Annotated[int, pydantic.Field(ge=1)]
     model_swap_poll_interval: Annotated[float, pydantic.Field(ge=1.0)]
 
-    classifier_h5_filename: Annotated[str, pydantic.Field(frozen=True)]
-    classifier_types: dict[int, str] = {}
+    # Database
+    database_write_interval: Annotated[float, pydantic.Field(ge=1.0)]
+    database_filepath: Annotated[Path, pydantic.BeforeValidator(lambda p : Path(p))]
+    lock_contention_timeout: Annotated[float, pydantic.Field(ge=0)]
+    database_write_batch_size: Annotated[int, pydantic.Field(ge=1)]
+
+    # Explicitly invoked post validators (require arguments to be passed, hence cannot be implemented via pydantic.model_validator)
+    def prepend_database_path(self, parent_dir: Path) -> Path:
+        self.database_filepath = parent_dir / self.database_filepath
+        if not (self.database_filepath.is_file()):
+            raise ValueError(f'Path to image bucket ({str(self.database_filepath)}) is not a directory')
+        if not (self.database_filepath.is_absolute()):
+            raise ValueError(f'Directory path to image bucket must be absolute')
+        return self.database_filepath
 
     def prepend_bucket_path(self, parent_dir: Path) -> Path:
         self.image_bucket = parent_dir / self.image_bucket
