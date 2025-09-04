@@ -31,6 +31,8 @@ class ServerConfig(pydantic.BaseModel):
     image_bucket: Annotated[Path, pydantic.BeforeValidator(lambda i : Path(i))]
 
     new_data_lookback_threshold: Annotated[int, pydantic.Field(ge=1)]
+    model_swap_poll_interval: Annotated[float, pydantic.Field(ge=1.0)]
+
     classifier_h5_filename: Annotated[str, pydantic.Field(frozen=True)]
     classifier_types: dict[int, str] = {}
 

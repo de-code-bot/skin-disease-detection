@@ -5,6 +5,7 @@ image_bucket='image_bucket'
 
 [automations]
 new_data_lookback_threshold=7   # 1 week
+model_swap_poll_interval=86_400
 
 [models]
 classifier_h5_filename='classifier.h5'

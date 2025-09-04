@@ -1,14 +1,17 @@
-from quart import Quart
 from pathlib import Path
 from typing import Final
 
 from backend.auxilary.utils import generic_error_handler
+from backend.background.runtime import model_swapper
 from backend.config.app_config import ServerConfig
-
-from backend.dependencies.singleton_registry import SingletonRegistry
 from backend.dependencies import initializers
+from backend.dependencies.singleton_registry import SingletonRegistry
 
 import keras
+
+from quart import Quart
+
+__all__ = ('create_app',)
 
 def create_app() -> Quart:
     '''Create an instance of the Quart app'''
@@ -24,7 +27,8 @@ def create_app() -> Quart:
     server_config.prepend_bucket_path(Path(app.instance_path))
     server_config.populate_classifier_types(SERVER_ROOT_DIRECTORY / 'classification' / 'categories.json')
     
-    image_classifier: Final[keras.Model] = initializers.init_image_classifier(Path(app.instance_path) / Path(server_config.classifier_h5_filename))
+    model_filepath: Final[Path] = Path(app.instance_path) / Path(server_config.classifier_h5_filename)
+    image_classifier: Final[keras.Model] = initializers.init_image_classifier(model_filepath)
 
     singleton_registry: Final[SingletonRegistry] = SingletonRegistry(server_config=server_config,
                                                                      image_classifier=image_classifier)
@@ -40,5 +44,15 @@ def create_app() -> Quart:
             app.view_functions[view] = singleton_registry.inject_singletons(function)
 
     app.register_error_handler(Exception, generic_error_handler)
+
+    # ASGI Lifecycle middleware
+    @app.before_serving
+    async def startup() -> None:
+        app.add_background_task(model_swapper, model_filepath, image_classifier, server_config.model_swap_poll_interval)
+    
+    @app.after_serving
+    async def shutdown() -> None:
+        for task in app.background_tasks:
+            task.cancel()
 
     return app
