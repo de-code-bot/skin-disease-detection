@@ -1,8 +1,8 @@
 '''Script for creating disease_classifications table'''
-import sqlite3
-from typing import Final
-import sys
 import os
+import sqlite3
+import sys
+from typing import Final
 
 __all__ = ('main',)
 
@@ -15,5 +15,4 @@ def main(database_path: str) -> None:
         conn.commit()
 
 if __name__ == '__main__':
-    print(sys.argv)
     main(sys.argv[1])
