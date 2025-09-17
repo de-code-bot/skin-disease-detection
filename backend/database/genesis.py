@@ -14,7 +14,7 @@ def main(database_path: Optional[str] = None) -> None:
         database_path = str(base_dir / 'instance' / config_dict.get('database', {}).get('database_path', 'test.db'))
     
     if not Path(database_path).exists():
-    Path(database_path).parent.mkdir(parents=True)
+        Path(database_path).parent.mkdir(parents=True)
     
     with sqlite3.connect(database_path) as conn:
         cursor: sqlite3.Cursor = conn.cursor()
