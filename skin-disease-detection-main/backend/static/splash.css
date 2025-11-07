@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+    height: 100vh;
+}
+
+.splash-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    padding: 60px 20px 30px;
+    position: relative;
+}
+
+.splash-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.logo-container {
+    margin-bottom: 40px;
+    animation: fadeInScale 0.8s ease-out;
+}
+
+.logo-circle {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+.logo-circle svg {
+    width: 70px;
+    height: 70px;
+    color: #667eea;
+}
+
+.app-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 10px 0;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    letter-spacing: -1px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.app-subtitle {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0 0 60px 0;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.loading-container {
+    width: 100%;
+    max-width: 280px;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.loading-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffffff, #f0f0f0);
+    border-radius: 10px;
+    transition: width 0.3s ease-out;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.loading-text {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.splash-footer {
+    padding: 20px;
+    text-align: center;
+    animation: fadeIn 1s ease-out 1s both;
+}
+
+.splash-footer p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@media (max-width: 600px) {
+    .splash-container {
+        padding: 40px 20px 20px;
+    }
+
+    .app-title {
+        font-size: 48px;
+    }
+
+    .app-subtitle {
+        font-size: 18px;
+        margin-bottom: 50px;
+    }
+
+    .logo-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 25px;
+    }
+
+    .logo-circle svg {
+        width: 60px;
+        height: 60px;
+    }
+
+    .loading-container {
+        max-width: 240px;
+    }
+
+    .splash-footer p {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .app-title {
+        font-size: 42px;
+    }
+
+    .app-subtitle {
+        font-size: 16px;
+    }
+}

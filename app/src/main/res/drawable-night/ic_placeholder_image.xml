@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Dark mode background circle -->
+    <path
+        android:fillColor="#1E1E1E"
+        android:pathData="M60,10 A50,50 0,1,1 60,110 A50,50 0,1,1 60,10 Z"/>
+
+    <!-- Image frame (darker) -->
+    <path
+        android:fillColor="#2C2C2C"
+        android:pathData="M35,35 L85,35 L85,85 L35,85 Z"/>
+
+    <!-- Mountain/landscape icon -->
+    <path
+        android:fillColor="#42A5F5"
+        android:pathData="M35,75 L50,55 L65,70 L85,45 L85,85 L35,85 Z"/>
+
+    <!-- Sun/circle in corner -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M70,50 A8,8 0,1,1 70,50 Z"/>
+
+    <!-- Camera lens in center -->
+    <path
+        android:fillColor="#64B5F6"
+        android:pathData="M60,45 A10,10 0,1,1 60,65 A10,10 0,1,1 60,45 Z"/>
+
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M60,50 A5,5 0,1,1 60,60 A5,5 0,1,1 60,50 Z"/>
+
+    <!-- Plus icon overlay -->
+    <path
+        android:strokeColor="#90CAF9"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M60,30 L60,40"/>
+    <path
+        android:strokeColor="#90CAF9"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M50,35 L70,35"/>
+</vector>
+

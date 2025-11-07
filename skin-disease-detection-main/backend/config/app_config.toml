@@ -1,0 +1,9 @@
+# Key names need to be in uppercase to be recognised by Quart as valid config entries
+
+[network]
+PORT=5000
+HOST='0.0.0.0'
+
+[application]
+APPLICATION_ROOT='/'
+

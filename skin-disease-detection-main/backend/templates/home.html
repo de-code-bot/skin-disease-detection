@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - Skin Disease Detection</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}?v=2">
+</head>
+<body>
+  <div class="home-container">
+    <div class="hero-section">
+      <div class="logo-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <h1>Skin Disease Detection</h1>
+      <p class="tagline">AI-Powered Dermatology Assistant</p>
+      <p class="description">Upload an image of a skin condition and let our AI model help identify potential skin diseases.</p>
+    </div>
+
+    <div class="button-container">
+      <a href="/analyze" class="main-btn analyze-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>Analyze Now</span>
+      </a>
+
+      <a href="/about" class="main-btn about-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <span>About Us</span>
+      </a>
+    </div>
+
+    <footer class="home-footer">
+      <p>Developed by Ahaan Mehta & Sachi Mane</p>
+    </footer>
+  </div>
+</body>
+</html>

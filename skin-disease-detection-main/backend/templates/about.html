@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us - Skin Disease Detection</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='about.css') }}?v=2">
+</head>
+<body>
+  <div class="about-container">
+    <a href="/home" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to Home
+    </a>
+
+    <div class="about-content">
+      <h1>About Us</h1>
+
+      <div class="about-section">
+        <h2>Our Mission</h2>
+        <p>We developed this AI-powered skin disease detection system to make preliminary dermatological screening accessible to everyone. Our goal is to help users identify potential skin conditions early and seek appropriate medical attention.</p>
+      </div>
+
+      <div class="about-section">
+        <h2>How It Works</h2>
+        <p>Our application uses advanced machine learning algorithms trained on thousands of dermatological images. Simply upload a clear photo of the affected skin area, and our AI model will analyze it to suggest possible skin conditions.</p>
+        <p class="disclaimer"><strong>Important:</strong> This tool is for informational purposes only and should not replace professional medical advice. Always consult with a qualified dermatologist for proper diagnosis and treatment.</p>
+      </div>
+
+      <div class="about-section">
+        <h2>Meet the Developers</h2>
+        <div class="developers">
+          <div class="developer-card">
+            <div class="developer-avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <h3>Ahaan Mehta</h3>
+            <p class="role">Co-Developer</p>
+            <p class="description">Passionate about AI and healthcare technology, focused on making medical diagnostics more accessible.</p>
+          </div>
+
+          <div class="developer-card">
+            <div class="developer-avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <h3>Sachi Mane</h3>
+            <p class="role">Co-Developer</p>
+            <p class="description">Dedicated to leveraging machine learning to solve real-world healthcare challenges and improve patient outcomes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <h2>Technology Stack</h2>
+        <div class="tech-stack">
+          <div class="tech-item">
+            <span class="tech-icon">🤖</span>
+            <span>TensorFlow/Keras</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-icon">🐍</span>
+            <span>Python</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-icon">⚡</span>
+            <span>Quart Framework</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-icon">📱</span>
+            <span>Responsive Web Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-section">
+        <a href="/analyze" class="cta-btn">Try It Now</a>
+      </div>
+    </div>
+
+    <footer class="about-footer">
+      <p>&copy; 2025 Skin Disease Detection. All rights reserved.</p>
+      <p>Developed by Ahaan Mehta & Sachi Mane</p>
+    </footer>
+  </div>
+</body>
+</html>
